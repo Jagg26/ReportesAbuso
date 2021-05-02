@@ -1,23 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react';
+import Main from './components/Main';
+import About from './components/About';
 
-function App() {
+const App = () => {
+  const [data, setData] = useState({});
+
+  const consultAPI = async () => {
+    const api = await fetch('https://staysafe-60f8.restdb.io/rest/molesters?apikey=48a7653c557f3c3cefc481412c38cb682f4b3');
+    const data = await api.json()
+
+    setData(data);
+
+  }
+
+  //Load Table
+  useEffect(() => {
+    consultAPI();
+  }, [])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Main
+        data={data}
+      />
+      <About />
     </div>
   );
 }
